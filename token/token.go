@@ -1,34 +1,63 @@
 package token
 
-type TokenType string;
+type TokenType []rune
 
 type Token struct {
-	Type TokenType
-	Literal string 
+	Type    TokenType
+	Literal []rune
 }
 
-const (
-	ILLEGAL = "ILLEGAL"
-	EOF = "EOF"
+var (
+	ILLEGAL = []rune("ILLEGAL")
+	EOF     = []rune("EOF")
 
 	// Identifiers + literals
-	IDENT = "IDENT" // add, foobar, x, y, ...
-	INT = "INT" // 123456
+	IDENT = []rune("IDENT") // add, foobar, x, y, ...
+	INT   = []rune("INT")   // 123456
 
 	// Operators
-	ASSIGN = "="
-	PLUS = "+"
+	ASSIGN   = []rune("=")
+	PLUS     = []rune("+")
+	MINUS    = []rune("-")
+	BANG     = []rune("!")
+	ASTERISK = []rune("*")
+	SLASH    = []rune("/")
 
+	LT = []rune("<")
+	GT = []rune(">")
 	// Delimiters
-	COMMA = ","
-	SEMICOLON = ";"
-
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
-
+	COMMA     = []rune(",")
+	SEMICOLON = []rune(";")
+	LPAREN    = []rune("(")
+	RPAREN    = []rune(")")
+	LBRACE    = []rune("{")
+	RBRACE    = []rune("}")
 	// Keywords
-	FUNCTION = "FUNCTION"
-	LET = "LET"
+	FUNCTION = []rune("FUNCTION")
+	LET      = []rune("LET")
+	TRUE     = []rune("TRUE")
+	FALSE    = []rune("FALSE")
+	IF       = []rune("IF")
+	ELSE     = []rune("ELSE")
+	RETURN   = []rune("RETURN")
+
+	EQ     = []rune("==")
+	NOT_EQ = []rune("!=")
 )
+
+var keywords = map[string]TokenType{
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
+}
+
+func LookupIdent(ident []rune) TokenType {
+	if tok, ok := keywords[string(ident)]; ok {
+		return tok
+	}
+	return IDENT
+}
