@@ -29,6 +29,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 	p.infixParseFns = make(map[string]infixParseFn)
+	p.registerInfix(token.GREATERTHANOREQUALTO, p.parseInfixExpression)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
@@ -310,24 +311,26 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 const (
 	_ int = iota
 	LOWEST
-	EQUALS      // ==
-	LESSGREATER // > or <
-	SUM         // +
-	PRODUCT     // *
-	PREFIX      // -X or !X
-	CALL        // myFunction(X)
+	GREATERTHANOREQUALTO // >=
+	EQUALS               // ==
+	LESSGREATER          // > or <
+	SUM                  // +
+	PRODUCT              // *
+	PREFIX               // -X or !X
+	CALL                 // myFunction(X)
 )
 
 var precedences = map[string]int{
-	string(token.EQ):       EQUALS,
-	string(token.NOT_EQ):   EQUALS,
-	string(token.LT):       LESSGREATER,
-	string(token.GT):       LESSGREATER,
-	string(token.PLUS):     SUM,
-	string(token.MINUS):    SUM,
-	string(token.SLASH):    PRODUCT,
-	string(token.ASTERISK): PRODUCT,
-	string(token.LPAREN):   CALL,
+	string(token.GREATERTHANOREQUALTO): GREATERTHANOREQUALTO,
+	string(token.EQ):                   EQUALS,
+	string(token.NOT_EQ):               EQUALS,
+	string(token.LT):                   LESSGREATER,
+	string(token.GT):                   LESSGREATER,
+	string(token.PLUS):                 SUM,
+	string(token.MINUS):                SUM,
+	string(token.SLASH):                PRODUCT,
+	string(token.ASTERISK):             PRODUCT,
+	string(token.LPAREN):               CALL,
 }
 
 func (p *Parser) peekPrecedence() int {
@@ -350,6 +353,7 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 		Operator: string(p.curToken.Literal),
 		Left:     left,
 	}
+	// fmt.Println(left)
 	precedence := p.curPrecedence()
 	p.nextToken()
 	expression.Right = p.parseExpression(precedence)
