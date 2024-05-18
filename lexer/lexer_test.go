@@ -2,7 +2,6 @@ package lexer
 
 import (
 	"bytes"
-	"fmt"
 	"monkey/token"
 	"testing"
 )
@@ -23,13 +22,14 @@ func TestNextToken(t *testing.T) {
 	}
 	10 == 10;
 	10 != 9;
+	5 >= 5;
+	5 <= 5;
 	`)
 
 	tests := []struct {
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
-		{token.GREATERTHANOREQUALTO, ">="},
 		{token.LET, "let"},
 		{token.IDENT, "five"},
 		{token.ASSIGN, "="},
@@ -103,6 +103,14 @@ func TestNextToken(t *testing.T) {
 		{token.NOT_EQ, "!="},
 		{token.INT, "9"},
 		{token.SEMICOLON, ";"},
+		{token.INT, "5"},
+		{token.GREATERTHANOREQUALTO, ">="},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "5"},
+		{token.LESSTHANOREQUALTO, "<="},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
@@ -112,7 +120,6 @@ func TestNextToken(t *testing.T) {
 		tok := l.NextToken()
 
 		if !bytes.Equal([]byte(string(tok.Type)), []byte(string(tt.expectedType))) {
-			fmt.Print(tok)
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q", i, tt.expectedType, tok.Type)
 		}
 

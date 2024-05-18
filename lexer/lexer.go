@@ -43,14 +43,21 @@ func (l *Lexer) NextToken() token.Token {
 	case '*':
 		tok = newToken(token.ASTERISK, l.ch)
 	case '<':
-		tok = newToken(token.LT, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.LESSTHANOREQUALTO, Literal: []rune{ch, l.ch}}
+		} else {
+			tok = newToken(token.LT, l.ch)
+		}
 	case '>':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.GREATERTHANOREQUALTO, Literal: []rune{ch, l.ch}}
+		} else {
+			tok = newToken(token.GT, l.ch)
 		}
-		tok = newToken(token.GT, l.ch)
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -116,7 +123,7 @@ func isLetter(ch rune) bool {
 
 func New(input []rune) *Lexer {
 	if string(input) == "1 >= 1" {
-		fmt.Printf("input: %s\n", input)
+		fmt.Printf("input: %s\n", string(input))
 	}
 	l := &Lexer{input: input}
 	l.readChar()
