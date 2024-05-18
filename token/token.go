@@ -45,6 +45,7 @@ var (
 	NOT_EQ = []rune("!=")
 
 	GREATERTHANOREQUALTO = []rune(">=")
+	LESSTHANOREQUALTO    = []rune("<=")
 )
 
 var keywords = map[string]TokenType{

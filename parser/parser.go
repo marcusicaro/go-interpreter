@@ -30,6 +30,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 	p.infixParseFns = make(map[string]infixParseFn)
 	p.registerInfix(token.GREATERTHANOREQUALTO, p.parseInfixExpression)
+	p.registerInfix(token.LESSTHANOREQUALTO, p.parseInfixExpression)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
@@ -312,6 +313,7 @@ const (
 	_ int = iota
 	LOWEST
 	GREATERTHANOREQUALTO // >=
+	LESSTHANOREQUALTO    // <=
 	EQUALS               // ==
 	LESSGREATER          // > or <
 	SUM                  // +
@@ -322,6 +324,7 @@ const (
 
 var precedences = map[string]int{
 	string(token.GREATERTHANOREQUALTO): GREATERTHANOREQUALTO,
+	string(token.LESSTHANOREQUALTO):    LESSTHANOREQUALTO,
 	string(token.EQ):                   EQUALS,
 	string(token.NOT_EQ):               EQUALS,
 	string(token.LT):                   LESSGREATER,
