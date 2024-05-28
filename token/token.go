@@ -46,6 +46,8 @@ var (
 
 	GREATERTHANOREQUALTO = []rune(">=")
 	LESSTHANOREQUALTO    = []rune("<=")
+
+	STRING = []rune("STRING")
 )
 
 var keywords = map[string]TokenType{
