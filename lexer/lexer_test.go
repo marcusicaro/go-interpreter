@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"bytes"
+	"fmt"
 	"monkey/token"
 	"testing"
 )
@@ -24,6 +25,10 @@ func TestNextToken(t *testing.T) {
 	10 != 9;
 	5 >= 5;
 	5 <= 5;
+	"foobar"
+	"foo bar"
+	"hello\n world"
+	"hello \"world\""
 	`)
 
 	tests := []struct {
@@ -111,6 +116,10 @@ func TestNextToken(t *testing.T) {
 		{token.LESSTHANOREQUALTO, "<="},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
+		{token.STRING, "foobar"},
+		{token.STRING, "foo bar"},
+		{token.STRING, "hello\n world"},
+		{token.STRING, "hello \"world\""},
 		{token.EOF, ""},
 	}
 
@@ -123,7 +132,10 @@ func TestNextToken(t *testing.T) {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q", i, tt.expectedType, tok.Type)
 		}
 
-		if !bytes.Equal([]byte(string(tok.Literal)), []byte(string(tt.expectedLiteral))) {
+		fmt.Println("ads: " + string(tok.Literal))
+		fmt.Println("asd: " + string(tt.expectedLiteral))
+
+		if string(tok.Literal) != string(tt.expectedLiteral) {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
 				i, tt.expectedLiteral, tok.Literal)
 		}
