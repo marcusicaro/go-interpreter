@@ -2,7 +2,6 @@ package lexer
 
 import (
 	"bytes"
-	"fmt"
 	"monkey/token"
 	"testing"
 )
@@ -131,9 +130,6 @@ func TestNextToken(t *testing.T) {
 		if !bytes.Equal([]byte(string(tok.Type)), []byte(string(tt.expectedType))) {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q", i, tt.expectedType, tok.Type)
 		}
-
-		fmt.Println("ads: " + string(tok.Literal))
-		fmt.Println("asd: " + string(tt.expectedLiteral))
 
 		if string(tok.Literal) != string(tt.expectedLiteral) {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
