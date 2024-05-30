@@ -73,6 +73,9 @@ func (l *Lexer) NextToken() token.Token {
 	case 0:
 		tok.Literal = []rune("")
 		tok.Type = token.EOF
+	case '"':
+		tok.Type = token.STRING
+		tok.Literal = []rune(l.readString())
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
@@ -89,6 +92,36 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return tok
+}
+
+func (l *Lexer) readString() string {
+	backslash := false
+	var str []rune
+	for {
+		l.readChar()
+
+		if backslash {
+			switch l.ch {
+			case '"':
+				str = append(str, '\\', '"')
+			case 'n':
+				str = append(str, '\n')
+			case 't':
+				str = append(str, '\t')
+			default:
+				str = append(str, l.ch)
+			}
+			backslash = false
+		} else if l.ch == '\\' {
+			backslash = true
+		} else if l.ch == '"' || l.ch == 0 {
+			break
+		} else {
+			str = append(str, l.ch)
+		}
+	}
+	fmt.Println(string(str))
+	return string(str)
 }
 
 func (l *Lexer) readNumber() []rune {
