@@ -28,6 +28,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.INT, p.parseIntegerLiteral)
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
+	p.registerPrefix(token.STRING, p.parseStringLiteral)
 	p.infixParseFns = make(map[string]infixParseFn)
 	p.registerInfix(token.GREATERTHANOREQUALTO, p.parseInfixExpression)
 	p.registerInfix(token.LESSTHANOREQUALTO, p.parseInfixExpression)
@@ -49,6 +50,10 @@ func New(l *lexer.Lexer) *Parser {
 	p.nextToken()
 	p.nextToken()
 	return p
+}
+
+func (p *Parser) parseStringLiteral() ast.Expression {
+	return &ast.StringLiteral{Token: p.curToken, Value: string(p.curToken.Literal)}
 }
 
 func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {

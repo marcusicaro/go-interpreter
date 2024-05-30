@@ -103,7 +103,7 @@ func (l *Lexer) readString() string {
 		if backslash {
 			switch l.ch {
 			case '"':
-				str = append(str, '\\', '"')
+				str = append(str, '"')
 			case 'n':
 				str = append(str, '\n')
 			case 't':
