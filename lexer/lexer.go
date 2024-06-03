@@ -120,7 +120,6 @@ func (l *Lexer) readString() string {
 			str = append(str, l.ch)
 		}
 	}
-	fmt.Println(string(str))
 	return string(str)
 }
 
