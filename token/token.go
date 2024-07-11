@@ -48,6 +48,9 @@ var (
 	LESSTHANOREQUALTO    = []rune("<=")
 
 	STRING = []rune("STRING")
+
+	LBRACKET = []rune("[")
+	RBRACKET = []rune("]")
 )
 
 var keywords = map[string]TokenType{
