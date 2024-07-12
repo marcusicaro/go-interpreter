@@ -1,1 +1,1 @@
-A go lang interpreter test
+A go lang interpreter
