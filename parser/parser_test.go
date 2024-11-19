@@ -710,8 +710,8 @@ func TestParsingArrayLiterals(t *testing.T) {
 }
 
 func TestParsingIndexExpressions(t *testing.T) {
-	input := rune("myArray[1 + 1]")
-	l := lexer.New(input)
+	input := "myArray[1 + 1]"
+	l := lexer.New([]rune(input))
 	p := New(l)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
