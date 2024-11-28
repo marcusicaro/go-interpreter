@@ -51,6 +51,8 @@ var (
 
 	LBRACKET = []rune("[")
 	RBRACKET = []rune("]")
+
+	COLON = []rune(":")
 )
 
 var keywords = map[string]TokenType{
